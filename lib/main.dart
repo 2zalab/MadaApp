@@ -3,10 +3,14 @@ import 'package:flutter/services.dart';
 import 'package:mada_app/utils/app_theme.dart';
 import 'package:mada_app/screens/splash_screen.dart';
 
+/// Entry point of the MadaApp application.
+///
+/// Configures system UI settings and locks orientation to portrait mode
+/// before launching the app.
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  
-  // Configuration de la barre de statut
+
+  // Configuration de la barre de statut pour une apparence moderne
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
@@ -15,16 +19,20 @@ void main() {
       systemNavigationBarIconBrightness: Brightness.dark,
     ),
   );
-  
-  // Verrouiller l'orientation en portrait
+
+  // Verrouiller l'orientation en portrait pour une expérience cohérente
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
-  
+
   runApp(const MadaApp());
 }
 
+/// Root widget of the MadaApp application.
+///
+/// Configures Material Design 3 theming and sets up the navigation
+/// starting with the splash screen.
 class MadaApp extends StatelessWidget {
   const MadaApp({super.key});
 

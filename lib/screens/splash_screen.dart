@@ -3,6 +3,11 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:mada_app/utils/app_theme.dart';
 import 'package:mada_app/screens/onboarding_screen.dart';
 
+/// Initial splash screen shown when the app launches.
+///
+/// Displays the app logo, name, and a loading indicator for 3 seconds
+/// before automatically navigating to the onboarding screen.
+/// Uses Material Design 3 with smooth animations.
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
@@ -17,21 +22,39 @@ class _SplashScreenState extends State<SplashScreen> {
     _navigateToOnboarding();
   }
 
+  /// Navigates to the onboarding screen after a delay.
+  ///
+  /// Includes error handling to gracefully handle navigation failures.
   Future<void> _navigateToOnboarding() async {
-    await Future.delayed(const Duration(seconds: 3));
-    if (!mounted) return;
-    
-    Navigator.pushReplacement(
-      context,
-      PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) =>
-            const OnboardingScreen(),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          return FadeTransition(opacity: animation, child: child);
-        },
-        transitionDuration: const Duration(milliseconds: 800),
-      ),
-    );
+    try {
+      await Future.delayed(const Duration(seconds: 3));
+
+      // Check if widget is still mounted before navigating
+      if (!mounted) return;
+
+      await Navigator.pushReplacement(
+        context,
+        PageRouteBuilder(
+          pageBuilder: (context, animation, secondaryAnimation) =>
+              const OnboardingScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return FadeTransition(opacity: animation, child: child);
+          },
+          transitionDuration: const Duration(milliseconds: 800),
+        ),
+      );
+    } catch (e) {
+      // Log error in production, show error dialog in debug mode
+      debugPrint('Error navigating to onboarding: $e');
+
+      // If navigation fails, try a simple push as fallback
+      if (mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const OnboardingScreen()),
+        );
+      }
+    }
   }
 
   @override

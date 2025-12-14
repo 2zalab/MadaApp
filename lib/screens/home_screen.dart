@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:mada_app/utils/app_theme.dart';
+import 'package:mada_app/models/category.dart';
+import 'package:mada_app/screens/category_detail_screen.dart';
 
+/// Main home screen displaying all learning categories.
+///
+/// Shows a grid of category cards, user statistics, and a welcoming header.
+/// Users can tap on any category to view its word list and start learning.
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -10,6 +16,10 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  /// List of all available learning categories.
+  ///
+  /// In a production app, this would be loaded from a database or API.
+  /// Currently contains hardcoded sample data for 13 categories.
   final List<Category> _categories = [
     Category(
       id: 1,
@@ -323,17 +333,25 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       child: InkWell(
         onTap: () {
-          // Navigation vers les détails de la catégorie
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Ouverture de ${category.name}...'),
-              backgroundColor: category.color,
-              behavior: SnackBarBehavior.floating,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
+          try {
+            // Navigation vers les détails de la catégorie
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => CategoryDetailScreen(category: category),
               ),
-            ),
-          );
+            );
+          } catch (e) {
+            // Handle navigation errors gracefully
+            debugPrint('Error navigating to category details: $e');
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: const Text('Erreur lors de l\'ouverture de la catégorie'),
+                backgroundColor: Colors.red,
+                behavior: SnackBarBehavior.floating,
+              ),
+            );
+          }
         },
         borderRadius: BorderRadius.circular(20),
         child: Container(
@@ -431,20 +449,3 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-class Category {
-  final int id;
-  final String name;
-  final IconData icon;
-  final Color color;
-  final int wordCount;
-  final double progress;
-
-  Category({
-    required this.id,
-    required this.name,
-    required this.icon,
-    required this.color,
-    required this.wordCount,
-    required this.progress,
-  });
-}
