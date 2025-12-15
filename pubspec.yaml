@@ -9,35 +9,41 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  
+
   # UI & Animations
-  cupertino_icons: ^1.0.6
-  google_fonts: ^6.1.0
-  animated_text_kit: ^4.2.2
-  flutter_animate: ^4.5.0
-  lottie: ^3.0.0
-  shimmer: ^3.0.0
-  
+  cupertino_icons: ^1.0.6           # iOS-style icons
+  google_fonts: ^6.1.0              # ACTIVE: Used for Poppins font in AppTheme
+  animated_text_kit: ^4.2.2         # TODO: Use for typing effects in lessons
+  flutter_animate: ^4.5.0           # ACTIVE: Used for page transitions and UI animations
+  lottie: ^3.0.0                    # TODO: Use for loading states and success animations
+  shimmer: ^3.0.0                   # TODO: Use for skeleton loading screens
+
   # State Management
-  provider: ^6.1.1
-  get: ^4.6.6
-  
+  # TODO: Implement state management for user progress and word learning status
+  # Choose ONE: provider (recommended for simplicity) OR get (for routing + state)
+  provider: ^6.1.1                  # TODO: Use for user progress, settings, favorites
+  get: ^4.6.6                       # Alternative: Routing + state management
+
   # Storage
-  shared_preferences: ^2.2.2
-  sqflite: ^2.3.2
-  path_provider: ^2.1.2
-  
+  # TODO: Implement persistent storage for offline learning and progress tracking
+  shared_preferences: ^2.2.2        # TODO: Store user preferences and settings
+  sqflite: ^2.3.2                   # TODO: Local database for words, categories, progress
+  path_provider: ^2.1.2             # TODO: Get app directories for file storage
+
   # Audio
-  audioplayers: ^5.2.1
-  just_audio: ^0.9.36
-  
+  # TODO: Implement audio playback for word pronunciations
+  # Choose ONE: audioplayers OR just_audio (just_audio is recommended)
+  audioplayers: ^5.2.1              # Alternative audio player
+  just_audio: ^0.9.36               # TODO: Play word pronunciation audio files
+
   # Network & Data
-  dio: ^5.4.0
-  cached_network_image: ^3.3.1
-  
+  # TODO: Implement API integration for cloud sync and updates
+  dio: ^5.4.0                       # TODO: HTTP client for API calls
+  cached_network_image: ^3.3.1     # TODO: Cache images from API/CDN
+
   # Utils
-  intl: ^0.19.0
-  flutter_svg: ^2.0.9
+  intl: ^0.19.0                     # TODO: Use for date formatting and localization
+  flutter_svg: ^2.0.9               # TODO: Use for scalable vector icons
 
 dev_dependencies:
   flutter_test:
@@ -46,17 +52,20 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-  
+
   assets:
     - assets/images/
     - assets/icons/
     - assets/fonts/
-  
-  fonts:
-    - family: Poppins
-      fonts:
-        - asset: assets/fonts/Poppins-Regular.ttf
-        - asset: assets/fonts/Poppins-Bold.ttf
-          weight: 700
-        - asset: assets/fonts/Poppins-SemiBold.ttf
-          weight: 600
+
+  # Note: We use google_fonts package for Poppins font (loaded dynamically).
+  # If you prefer bundled fonts for offline use, add font files to assets/fonts/
+  # and uncomment the configuration below:
+  # fonts:
+  #   - family: Poppins
+  #     fonts:
+  #       - asset: assets/fonts/Poppins-Regular.ttf
+  #       - asset: assets/fonts/Poppins-Bold.ttf
+  #         weight: 700
+  #       - asset: assets/fonts/Poppins-SemiBold.ttf
+  #         weight: 600

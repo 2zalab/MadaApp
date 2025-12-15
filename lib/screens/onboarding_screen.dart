@@ -2,7 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:mada_app/utils/app_theme.dart';
 import 'package:mada_app/screens/home_screen.dart';
+import 'package:mada_app/models/onboarding_item.dart';
 
+/// Onboarding carousel screen introducing new users to the app.
+///
+/// Displays a 4-page carousel showcasing the main features:
+/// - Extensive vocabulary database (2500+ words)
+/// - Audio pronunciations
+/// - Progress tracking
+/// - Offline learning capability
+///
+/// Users can swipe through pages or skip directly to the home screen.
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
 
@@ -62,22 +72,41 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     }
   }
 
+  /// Skips the onboarding flow and navigates directly to home.
   void _skipOnboarding() {
     _navigateToHome();
   }
 
+  /// Navigates to the home screen with error handling.
+  ///
+  /// Uses an animated page transition for smooth UX.
   void _navigateToHome() {
-    Navigator.pushReplacement(
-      context,
-      PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) =>
-            const HomeScreen(),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          return FadeTransition(opacity: animation, child: child);
-        },
-        transitionDuration: const Duration(milliseconds: 600),
-      ),
-    );
+    try {
+      // Check if widget is still mounted before navigating
+      if (!mounted) return;
+
+      Navigator.pushReplacement(
+        context,
+        PageRouteBuilder(
+          pageBuilder: (context, animation, secondaryAnimation) =>
+              const HomeScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return FadeTransition(opacity: animation, child: child);
+          },
+          transitionDuration: const Duration(milliseconds: 600),
+        ),
+      );
+    } catch (e) {
+      // Log error and try fallback navigation
+      debugPrint('Error navigating to home: $e');
+
+      if (mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const HomeScreen()),
+        );
+      }
+    }
   }
 
   @override
@@ -265,16 +294,3 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 }
 
-class OnboardingItem {
-  final String title;
-  final String description;
-  final IconData icon;
-  final Color color;
-
-  OnboardingItem({
-    required this.title,
-    required this.description,
-    required this.icon,
-    required this.color,
-  });
-}
